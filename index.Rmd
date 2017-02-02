@@ -3,7 +3,7 @@ title: "IODS course project"
 author: "Ilari Hotti"
 output:
   html_document:
-    theme: flatly
+    theme: simplex
     toc: true
     toc_depth: 2
     fig_caption: true
@@ -17,7 +17,7 @@ output:
 ```{r child = "chapter1.Rmd"}
 ```
   
-***
+****
   
 ```{r child = "chapter2.Rmd"}
 ```
