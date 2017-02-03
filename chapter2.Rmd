@@ -1,7 +1,50 @@
-# Insert chapter 2 title here
+#Regression and model validation
 
-*Describe the work you have done this week and summarize your learning.*
+*This week I learned about importing and wrangling data and simple analysis*
 
-- Describe your work and results clearly. 
+The data is from some survey to italians or something.
+
+
+1. JUTTU
+```{r warning=FALSE, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(GGally)
+lrn14 <- read.table("data/learning2014.txt")
+dim (lrn14)
+str(lrn14)
+summary(lrn14)
+``` 
+Explore the structure and the dimensions of the data and describe the dataset briefly, assuming the reader has no previous knowledge of it. 
+
+2. JUTTU
+```{r warning=FALSE, message=FALSE}
+p <- ggpairs(lrn14, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
+p
+```
+Show a graphical overview of the data and show summaries of the variables in the data. Describe and interpret the outputs, commenting on the distributions of the variables and the relationships between them.
+
+3. JUTTU
+```{r warning=FALSE, message=FALSE}
+model1 <- lm(points ~ age + attitude + stra, data = lrn14)
+summary(model1)
+```
+
+
+
+4. JUTTU
+Using a summary of your fitted model, explain the relationship between the chosen explanatory variables and the target variable (interpret the model parameters). Explain and interpret the multiple R squared of the model. (3 points)
+
+
+5. JUTTU
+```{r warning=FALSE, message=FALSE}
+par(mfrow = c(2,2))
+plot(model1, which = c(1,2,5)) 
+```
+
+Explain the assumptions of the model and interpret the validity of those assumptions based on the diagnostic plots.
+
+
+ Describe your work and results clearly. 
 - Assume the reader has an introductory course level understanding of writing and reading R code as well as statistical methods
 - Assume the reader has no previous knowledge of your data or the more advanced methods you are using  

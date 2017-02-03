@@ -39,5 +39,11 @@ keep_columns <- c("gender","Age","attitude", "deep", "stra", "surf", "Points")
 # select the 'keep_columns' to create a new dataset
 learning2014 <- select(lrn14, one_of(keep_columns))
 
-# see the stucture of the new dataset
-str(learning2014)
+# change the name of the second column
+colnames(learning2014)[2] <- "age"
+
+# change the name of "Points" to "points"
+colnames(learning2014)[7] <- "points"
+
+# select rows where points is greater than zero
+learning2014 <- filter(learning2014, points > 0)
