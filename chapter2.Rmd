@@ -5,38 +5,40 @@
 
 
 ## Importing data
+
+The data is from a survey from a Finnish introductory statistics course regarding learning.
+
+I originally imported a dataset with 183 observations and 60 variables and manipulated it as advised into a tighter one, which I will be analysing now.
+
 ```{r warning=FALSE, message=FALSE}
 library(dplyr)
 library(ggplot2)
 library(GGally)
 lrn14 <- read.table("data/learning2014.txt")
-dim (lrn14)
 str(lrn14)
 summary(lrn14)
 ``` 
 
-I originally imported a dataset with 183 observations and 66 variables and manipulated it as advised into a tighter one, which I will be analysing now.
-
-It now contains 166 observations and 7 variables.
-
-```{r warning=FALSE, message=FALSE}
-summary(lrn14$gender)
-summary(lrn14$age)
-summary(lrn14$attitude)
-summary(lrn14$deep)
-summary(lrn14$stra)
-summary(lrn14$surf)
-summary(lrn14$points)
+It now contains 166 observations and 7 variables. The variables are:
 ```
- 
+* gender      Man (56) or Female (110)
+* age         Range 17-55, median 22.
+* attitude    Measures attitude towards learning statistics
+* deep        Deep learning
+* stra        Strategic approach
+* surf        Surface learning
+* points      Points from exam
+```
+
 
 
 ## Graphical overview
 ```{r warning=FALSE, message=FALSE}
-p <- ggpairs(lrn14, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
-p
+ggpairs(lrn14, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
+
 ```
 
+The highest correlation to `points` seems to be with variable `attitude`.
 
 
 
@@ -75,7 +77,7 @@ par(mfrow = c(2,2))
 plot(model2, which = c(1,2,5)) 
 ```
 
-Our model seems to be valid.
+There is no pattern in the vs fitted plot and in the Q-Q plot the residuals are on the line. There are no significant outliers in the residuals vs leverage plot so our model assumptions are ok.
 
 ## Conclusion
 
