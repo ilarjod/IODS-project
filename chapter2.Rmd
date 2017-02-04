@@ -60,7 +60,9 @@ model2 <- lm(points ~ attitude , data = lrn14)
 summary(model2)
 ```
 
-Attitude is a statistically significant variable. 
+R-squared: the percentage of the response variable variation that is explained by a linear model.  
+
+So `attitude` is a statistically significant variable. It explains ~19% of the variability in `points`. 
 
 Let's visualize the model.
 
@@ -72,12 +74,22 @@ qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
 
 
 ## Model diagnostics
+
+When fitting  linear model, we are assuming:
+
+* The errors are normally distributed
+* The errors are not correlated
+* The errors have constant variance
+* The size of a given error does not depend on the explanatory variables
+
+We can evaluate the assumptions by examining how the residuals behave. 
+
 ```{r warning=FALSE, message=FALSE}
 par(mfrow = c(2,2))
 plot(model2, which = c(1,2,5)) 
 ```
 
-There is no pattern in the vs fitted plot and in the Q-Q plot the residuals are on the line. There are no significant outliers in the residuals vs leverage plot so our model assumptions are ok.
+There is no pattern in the vs fitted plot and in the Q-Q plot the residuals are on the line, which means the residuals are normally distributed. There are no significant outliers in the residuals vs leverage plot so our model assumptions are ok.
 
 ## Conclusion
 
