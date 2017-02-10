@@ -6,7 +6,7 @@ lrn14 <- read.table("learning2014.txt")
 # Some background and other variables are omitted from this version, 
 #otherwise all 183 responses are included. There are no missing values.
 
-# Let's see some visualizations about the data
+# Let's see some visualizations of the data
 
 pairs(lrn14[-1])
 

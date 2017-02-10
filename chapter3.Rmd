@@ -1,0 +1,67 @@
+#Logistic regression
+```{r warning=FALSE, message=FALSE}
+library("tidyverse")
+library("ggplot2")
+library("dplyr")
+library(GGally)
+alc <- read.table("data/alc.txt")
+
+```
+
+## Examing the variables
+```{r warning=FALSE, message=FALSE}
+
+cbPalette <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
+# To use for fills, add
+  
+
+g2 <- ggplot(alc, aes(x = Medu, col = sex, fill = sex)) + geom_bar()
+g2 
+
+g3 <- ggplot(alc, aes(x = Pstatus, col = sex, fill = sex)) + geom_bar()
+g3 
+
+g4 <- ggplot(alc, aes(x = address, col = sex, fill = sex)) + geom_bar()
+g4 
+
+g5 <- ggplot(alc, aes(x = famsize, col = sex, fill = sex)) + geom_bar()
+g5 
+```
+
+Nice plots
+
+```{r warning=FALSE, message=FALSE}
+table(high_use = alc$high_use, address = alc$address) %>% prop.table() %>% addmargins()  
+
+table(high_use = alc$high_use, parents_living_together = alc$Pstatus) %>% prop.table() %>% addmargins()
+
+table(high_use = alc$high_use, mothers_education_level = alc$Medu) %>% addmargins()  %>% prop.table()
+
+table(high_use = alc$high_use, familysize = alc$famsize) %>% addmargins() %>% prop.table()
+```
+
+Sweet tables
+
+## Fitting a logistic model
+```{r warning=FALSE, message=FALSE}
+m <- glm(high_use ~ Pstatus + Medu + address + famsize, data = alc, family = "binomial")
+
+summary(m)
+coef(m)
+```
+
+
+Looks like living in urban areas makes kids drink more heavily. Other variables seem not very significant.
+
+## Predicting
+```{r warning=FALSE, message=FALSE}
+urbanmodel <- glm(high_use ~ address, data = alc, family = "binomial")
+
+OR <- coef(urbanmodel) %>% exp
+
+CI <- exp(confint(urbanmodel))
+
+cbind(OR, CI)
+```
+## Conclusion

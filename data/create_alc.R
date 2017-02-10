@@ -1,5 +1,5 @@
 #Ilari Hotti 9.2.2017
-#Data got from https://archive.ics.uci.edu/ml/datasets/STUDENT+ALCOHOL+CONSUMPTION
+#Data from https://archive.ics.uci.edu/ml/datasets/STUDENT+ALCOHOL+CONSUMPTION
 
 student_por <- read.table("student-por.csv", sep=";", header=TRUE)
 student_mat <- read.table("student-mat.csv", sep=";", header=TRUE)
