@@ -1,17 +1,17 @@
 #Logistic regression
 
-
-I got some survey data from [here](https://archive.ics.uci.edu/ml/datasets/STUDENT+ALCOHOL+CONSUMPTION).
-
-
 ```{r warning=FALSE, message=FALSE}
 library("tidyverse")
 library("ggplot2")
 library("dplyr")
 library(GGally)
 alc <- read.table("data/alc.txt")
-Palette <- c("#999999", "#009E73", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+Palette <- c("#555555", "#009E73", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
+
+
+I got some survey data from [here](https://archive.ics.uci.edu/ml/datasets/STUDENT+ALCOHOL+CONSUMPTION).
+
 
 The survey questions are about students' studying and free time from two different classes. Data has no identifier for the students but it includes many background variables that can be used to combine the data.
 
@@ -20,7 +20,7 @@ In the data wrangling part I also created the high alcohol consumptions variable
 glimpse(alc)
 ```
 
-## Examining the variables
+### Examining the variables
 
 I'll examine students' alcohol consumption habits with 4 other variables.
 
@@ -59,7 +59,7 @@ table(high_use = alc$high_use, outgoingness = alc$goout) %>% addmargins()  %>% p
 Living area and family size seem to have something to do with with high alcohol consumption and there's high correlation with going out more.
 
 
-## Fitting a logistic model and predictions
+### Fitting a logistic model and predictions
 
 ```{r warning=FALSE, message=FALSE}
 m <- glm(high_use ~ address + Pstatus + famsize + goout, data = alc, family = "binomial")
@@ -94,8 +94,8 @@ alc <- mutate(alc, prediction = probability > 0.5)
 table(high_use = alc$high_use, prediction = alc$prediction)
 
 # initialize a plot of 'high_use' versus 'probability' in 'alc'
-g <- ggplot(alc, aes(x = probability, y = high_use, col = prediction))
-g + geom_point() + scale_fill_manual(values=Palette)
+g <- ggplot(alc, aes(x = probability, y = high_use, col = prediction)) + geom_point()
+g + scale_colour_manual(values=Palette)
 
 # tabulate the target variable versus the predictions
 table(high_use = alc$high_use, prediction = alc$prediction) %>% prop.table()  %>% addmargins()

@@ -4,7 +4,7 @@
 
 
 
-## Importing data
+### Importing data
 
 The data is from a survey from a Finnish introductory statistics course regarding learning.
 
@@ -32,7 +32,7 @@ It now contains 166 observations and 7 variables. The variables are:
 
 
 
-## Graphical overview
+### Graphical overview
 ```{r warning=FALSE, message=FALSE}
 ggpairs(lrn14, mapping = aes(col = gender, alpha = 0.3), lower = list(combo = wrap("facethist", bins = 20)))
 
@@ -44,7 +44,7 @@ The highest correlation to `points` seems to be with variable `attitude`.
 
 
 
-## Fitting a regression model
+### Fitting a regression model
 
 Let's try to model `points ` with 3 variables. I choose `age`, `attitude` and `stra`.
 
@@ -73,7 +73,7 @@ qplot(attitude, points, data = lrn14) + geom_smooth(method = "lm")
 
 
 
-## Model diagnostics
+### Model diagnostics
 
 When fitting  linear model, we are assuming:
 
@@ -91,7 +91,7 @@ plot(model2, which = c(1,2,5))
 
 There is no pattern in the vs fitted plot and in the Q-Q plot the residuals are on the line, which means the residuals are normally distributed. There are no significant outliers in the residuals vs leverage plot so our model assumptions are ok.
 
-## Conclusion
+### Conclusion
 
 Positive attitude gives you more points!
 
