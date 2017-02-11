@@ -13,7 +13,7 @@ alc <- read.table("data/alc.txt")
 Palette <- c("#999999", "#009E73", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
-Survey is about students' studying and free time from two different classes. Data has no identifier for the students but it includes many background variables that can be used to combine the data.
+The survey questions are about students' studying and free time from two different classes. Data has no identifier for the students but it includes many background variables that can be used to combine the data.
 
 In the data wrangling part I also created the high alcohol consumptions variable, which will studied further in the analysis.
 ```{r warning=FALSE, message=FALSE}
@@ -46,7 +46,7 @@ g5 + scale_fill_manual(values=Palette)
 g6 <- ggplot(alc, aes(x = goout, fill = high_use)) + geom_bar(position="fill")
 g6 + scale_fill_manual(values=Palette)
 ```
-Living area and family size seem to have something to do with with high alcohol consumption along with high correlation with going out more.
+
 
 ```{r warning=FALSE, message=FALSE}
 table(high_use = alc$high_use, address = alc$address) %>% prop.table() %>% addmargins()  
@@ -56,7 +56,7 @@ table(high_use = alc$high_use, outgoingness = alc$goout) %>% addmargins()  %>% p
 ```
 
 
-Living area and family size seem to have something to do with with high alcohol consumption along with high correlation with going out more.
+Living area and family size seem to have something to do with with high alcohol consumption and there's high correlation with going out more.
 
 
 ## Fitting a logistic model and predictions

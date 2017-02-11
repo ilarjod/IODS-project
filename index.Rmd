@@ -3,7 +3,7 @@ title: "IODS course project"
 author: "Ilari Hotti"
 output:
   html_document:
-    theme: simplex
+    theme: united
     toc: true
     toc_depth: 2
     fig_caption: true
