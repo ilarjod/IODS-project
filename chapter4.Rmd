@@ -6,20 +6,33 @@ library("ggplot2")
 library("dplyr")
 library("MASS")
 library("corrplot")
+
 data("Boston")
 Palette <- c("#555555", "#009E73", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
+This week's data is about housing values in [Boston](https://stat.ethz.ch/R-manual/R-devel/library/MASS/html/Boston.html).
+
+
 ```{r warning=FALSE, message=FALSE}
 str(Boston)
 pairs(Boston)
+```
 
+So there are 506 observations and 14 variables. The plot is not very informative. It's easier to spot high correlations with a correlogram, where a bigger and darker ball indicates higher correlation.
+
+```{r warning=FALSE, message=FALSE}
 cor_matrix<-cor(Boston) %>% round(digits = 2)
-cor_matrix
-
 corrplot(cor_matrix, method="circle", type="lower", cl.pos = "b", tl.pos = "d", tl.cex = 0.6)
 ```
 
+The variables are all continuous so the data can be scaled with one command for the further analysis. 
+
+Scaling here means subtracting the column means from the corresponding columns and dividing the difference with standard deviation:
+
+$$
+scaled(x) = \frac{x-means(x)}{sd(x)}
+$$
 
 ```{r warning=FALSE, message=FALSE}
 # center and standardize variables
@@ -28,17 +41,10 @@ boston_scaled <- scale(Boston)
 # summaries of the scaled variables
 summary(boston_scaled)
 ```
-Scaling means  subtracting the column means from the corresponding columns and dividing the difference with standard deviation:
-
-$$
-scaled(x) = \frac{x-means(x)}{sd(x)}
-$$
 
 ```{r warning=FALSE, message=FALSE}
 # change the object to data frame
 boston_scaled <- as.data.frame(boston_scaled)
-# class of the boston_scaled object
-class(boston_scaled)
 
 # save the scaled crim as scaled_crim
 scaled_crim <- boston_scaled$crim
@@ -48,12 +54,9 @@ summary(scaled_crim)
 
 # create a quantile vector of crim and print it
 bins <- quantile(scaled_crim)
-bins
+
 
 crime <- cut(scaled_crim, breaks = bins, include.lowest = TRUE, label = c("low", "med_low", "med_high", "high"))
-
-# look at the table of the new factor crime
-table(crime)
 
 # remove original crim from the dataset
 boston_scaled <- dplyr::select(boston_scaled, -crim)
@@ -62,20 +65,21 @@ boston_scaled <- dplyr::select(boston_scaled, -crim)
 boston_scaled <- data.frame(boston_scaled, crime)
 ```
 
-Training & testing:
+I broke the crime variable to 4 classes: low, med_low, med_high and high, each representing one quintile of the values. This is done because I can analyse the clustering only when the target variable is categorical.
+
+
+Next I sample 80% of the observations for the train set and leave the remaining 20% for the test set.
+
 ```{r warning=FALSE, message=FALSE}
 # number of rows in the Boston dataset 
 n <- nrow(boston_scaled)
-n
 # choose randomly 80% of the rows
 ind <- sample(n,  size = n * 0.8)
-ind
 # create train set
 train <- boston_scaled[ind,]
 
 # create test set 
 test <- boston_scaled[-ind,]
-test
 
 # save the correct classes from test data
 correct_classes <- test$crime
@@ -83,9 +87,12 @@ correct_classes <- test$crime
 # linear discriminant analysis
 lda.fit <- lda(crime ~ ., data = train)
 
-# print the lda.fit object
-lda.fit
 
+```
+
+In my LDA (linear disrciminant analysis) the categorical crime variable is the target and all the other variables are predictor variables. I fit the lda model to the train set and try to predict the classes in the test set. 
+
+```{r warning=FALSE, message=FALSE}
 # the function for lda biplot arrows
 lda.arrows <- function(x, myscale = 1, arrow_heads = 0.1, color = "red", tex = 0.75, choices = c(1,2)){
   heads <- coef(x)
@@ -101,20 +108,30 @@ classes <- as.numeric(train$crime)
 
 # plot the lda results
 plot(lda.fit, dimen = 2, col = classes, pch = classes)
-lda.arrows(lda.fit, myscale = 2.5)
+lda.arrows(lda.fit, myscale = 2)
+```
+
+We can see that variable rad (index of accessibility to radial highways) clearly has something to do with the high crime cluster.
+
+```{r warning=FALSE, message=FALSE}
 
 lda.pred <- predict(lda.fit, newdata = test)
 
 # cross tabulate the results
 table(correct = correct_classes, predicted = lda.pred$class)
-correct_classes
 ```
+
+The model works OK, even though some classes are predicted wrong but that is to be expected.
+
+
+
+
+
 ```{r warning=FALSE, message=FALSE}
-data(Boston)
+data("Boston")
 Bostonscaled <- scale(Boston)
 # euclidean distance matrix
 dist_eu <- dist(Bostonscaled)
-
 # look at the summary of the distances
 summary(dist_eu)
 # manhattan distance matrix
@@ -128,12 +145,12 @@ km <-kmeans(dist_eu, centers = 15 )
 
 # plot the Boston dataset with clusters
 pairs(Boston, col = km$cluster)
-
 ```
+
 
 ```{r warning=FALSE, message=FALSE}
 # MASS, ggplot2 and Boston dataset are available
-set.seed(123)
+set.seed(27)
 
 # euclidean distance matrix
 dist_eu <- dist(Boston)
@@ -143,7 +160,11 @@ k_max <- 10
 
 # calculate the total within sum of squares
 twcss <- sapply(1:k_max, function(k){kmeans(dist_eu, k)$tot.withinss})
+```
 
+ WCSS (within cluster sum of squares) drops the most at 2 centers.
+
+```{r warning=FALSE, message=FALSE}
 # visualize the results
 plot(1:k_max, twcss, type='b')
 
