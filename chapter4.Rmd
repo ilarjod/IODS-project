@@ -124,8 +124,7 @@ table(correct = correct_classes, predicted = lda.pred$class)
 The model works OK, even though some classes are predicted wrong but that is to be expected.
 
 
-
-
+Moving on to k-means clustering. I recall the data and scale it to examine distance properties of the data. I check out the euclidean (normal way of understanding distances) and manhattan (as if you lived in manhattan and had to move via the grid of streets) distances.
 
 ```{r warning=FALSE, message=FALSE}
 data("Boston")
@@ -141,12 +140,13 @@ dist_man <- dist(Bostonscaled, method = "manhattan")
 summary(dist_man)
 
 # k-means clustering
-km <-kmeans(dist_eu, centers = 15 )
+km <-kmeans(dist_eu, centers = 10 )
 
 # plot the Boston dataset with clusters
 pairs(Boston, col = km$cluster)
 ```
 
+Boston data with clusters. Then I think research what is an optimal amount of clusters for the data.
 
 ```{r warning=FALSE, message=FALSE}
 # MASS, ggplot2 and Boston dataset are available
@@ -174,3 +174,4 @@ km <-kmeans(dist_eu, centers = 2)
 # plot the Boston dataset with clusters
 pairs(Boston, col = km$cluster)
 ```
+(Again very poor plot but i cannot do better.)
