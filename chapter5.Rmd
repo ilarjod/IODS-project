@@ -1,2 +1,26 @@
 # Dimensionality reduction techniques
 
+```{r warning=FALSE, message=FALSE}
+library("tidyverse")
+library("ggplot2")
+library("dplyr")
+library("MASS")
+library("corrplot")
+library("GGally")
+
+human <- read.table("data/human_.txt")
+Palette <- c("#555555", "#009E73", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+```
+
+The data is wrangled.
+
+Let's visualize:
+
+```{r warning=FALSE, message=FALSE}
+
+ggpairs(human)
+
+corrplot(cor(human), type="lower")
+```
+
+
