@@ -13,16 +13,37 @@ human <- read.table("data/human_.txt")
 Palette <- c("#555555", "#009E73", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
 
-The data is wrangled.
+This week we'll be working with some Human Development Index (HDI) data. The data was wrangled from 2 datasets: HDI and GII (gender inequality index). I combined the datasets and reduced the observations and variables to 155 and 8 respectively to clean the data from missing values etc. I also combined some variables to create more interesting ones. 
 
-Let's visualize:
+So the data has now countries for rownnames and and 8 variables describing their human development.
+
+
+
 
 ```{r warning=FALSE, message=FALSE}
 summary(human)
+```
+
+* edu_2nd_ratio : ratio of females/males in secondary education
+* lab_ratio : ratio of females/males in the labour force
+* life_exp : life expectancy at birth
+* edu_exp : expected years of education
+* GNI.capita : gross national income per capita
+* mat_mort : maternal mortality
+* adol_birth : adolescent birth rate
+* parl_rep_f : female representatives in the parliament
+
+```{r warning=FALSE, message=FALSE}
 ggpairs(human, aes(col="black", alpha=0.1))
 
 corrplot(cor(human), type="lower")
 ```
+
+There some high correlations in the data. Most are very obvious, for example maternal mortality having  high negative correlation with life expectancy and positive with adolescent birth.
+
+
+Then I'll do the principal component analysis (PCA).
+
 ```{r warning=FALSE, message=FALSE}
 # perform principal component analysis (with the SVD method)
 pca_human <- prcomp(human)
@@ -31,7 +52,7 @@ pca_human <- prcomp(human)
 biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
 
 ```
-
+Without standardization the biplot seems to be useless so let's try that.
 
 ```{r warning=FALSE, message=FALSE}
 
@@ -48,7 +69,7 @@ biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2")
 
 ```
 
-
+We can see the intuitive correlations again. The developed countries are at the top left having high female labour force and parliament participation and high life and education expectancies. Struggling countries are at the opposite direction. PC1 component accounts for over 50% of the variance.
 
 
 
