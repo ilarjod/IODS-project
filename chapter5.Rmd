@@ -8,6 +8,7 @@ library("MASS")
 library("corrplot")
 library("GGally")
 
+
 human <- read.table("data/human_.txt")
 Palette <- c("#555555", "#009E73", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
 ```
@@ -17,10 +18,37 @@ The data is wrangled.
 Let's visualize:
 
 ```{r warning=FALSE, message=FALSE}
-
-ggpairs(human)
+summary(human)
+ggpairs(human, aes(col="black", alpha=0.1))
 
 corrplot(cor(human), type="lower")
 ```
+```{r warning=FALSE, message=FALSE}
+# perform principal component analysis (with the SVD method)
+pca_human <- prcomp(human)
+
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
+
+```
+
+
+```{r warning=FALSE, message=FALSE}
+
+# standardize the variables
+human_std <- scale(human)
+
+# print out summaries of the standardized variables
+summary(human_std)
+# perform principal component analysis (with the SVD method)
+pca_human <- prcomp(human_std)
+
+# draw a biplot of the principal component representation and the original variables
+biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
+
+```
+
+
+
 
 
