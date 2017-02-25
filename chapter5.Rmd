@@ -10,7 +10,7 @@ library("GGally")
 
 
 human <- read.table("data/human_.txt")
-Palette <- c("#555555", "#009E73", "#56B4E9", "#E69F00", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+
 ```
 
 This week we'll be working with some Human Development Index (HDI) data. The data was wrangled from 2 datasets: HDI and GII (gender inequality index). I combined the datasets and reduced the observations and variables to 155 and 8 respectively to clean the data from missing values etc. I also combined some variables to create more interesting ones. 
@@ -52,9 +52,10 @@ pca_human <- prcomp(human)
 biplot(pca_human, choices = 1:2, cex = c(0.8, 1), col = c("grey40", "deeppink2"))
 
 ```
+
 Without standardization the biplot seems to be useless so let's try that.
 
-```{r warning=FALSE, message=FALSE}
+```{r warning=FALSE, message=FALSE, fig.width=10, fig.height=8}
 
 # standardize the variables
 human_std <- scale(human)
